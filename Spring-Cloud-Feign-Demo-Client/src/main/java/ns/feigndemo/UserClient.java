@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.List;
 
-@FeignClient(value = "User", url = "http://localhost:8080")
+@FeignClient(name = "User", url = "http://localhost:8080",configuration=UserClientConfig.class)
 public interface UserClient {
 
     @RequestMapping(method = RequestMethod.GET, value = "/user")
@@ -26,6 +26,5 @@ public interface UserClient {
 
     @RequestMapping(method = RequestMethod.PUT, value = "/user/")
     ResponseEntity updateUser(User user);
-
 }
 

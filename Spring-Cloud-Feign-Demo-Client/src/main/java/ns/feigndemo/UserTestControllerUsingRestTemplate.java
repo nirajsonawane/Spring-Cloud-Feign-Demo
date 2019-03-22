@@ -39,9 +39,6 @@ public class UserTestControllerUsingRestTemplate {
 
     @GetMapping("{id}")
     public User getUserById(@PathVariable("id") int id) {
-
-        System.out.println("Calling User Service using Feign Client!!");
-
         Map<String, String> uriParams = new HashMap<String, String>();
         uriParams.put("id", String.valueOf(id));
 
@@ -53,35 +50,32 @@ public class UserTestControllerUsingRestTemplate {
         System.out.println(uri);
         RestTemplate restTemplate = new RestTemplate();
         User forEntity = restTemplate.getForObject(uri, User.class);
-        System.out.println(forEntity.toString());
+
         return forEntity;
     }
 
     @PostMapping
-    public ResponseEntity addUser(@RequestBody User user){
+    public ResponseEntity addUser(@RequestBody User user) {
         System.out.println("Add user");
         System.out.println(user.toString());
 
-        RestTemplate restTemplate= new RestTemplate();
+        RestTemplate restTemplate = new RestTemplate();
         HttpEntity<User> request = new HttpEntity<>(user);
-        System.out.println("New ###############");
+
 
         ResponseEntity exchange = restTemplate
-                .exchange("http://localhost:8080/user/", HttpMethod.POST, request,String.class);
-        System.out.println(exchange.getStatusCode());
-        System.out.println("NEW Log!!!!!!!!!!!!!!!!!");
+                .exchange("http://localhost:8080/user/", HttpMethod.POST, request, String.class);
+
         return exchange;
     }
+
     @DeleteMapping("{id}")
-    public ResponseEntity deleteUser(@PathVariable int id){
+    public ResponseEntity deleteUser(@PathVariable int id) {
         System.out.println("delete user");
         Map<String, String> params = new HashMap<String, String>();
         params.put("id", String.valueOf(id));
-        RestTemplate restTemplate= new RestTemplate();
-        restTemplate.delete("http://localhost:8080/user/{id}", params );
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.delete("http://localhost:8080/user/{id}", params);
         return new ResponseEntity("User Deleted successfully", HttpStatus.OK);
     }
-
-
-
 }
